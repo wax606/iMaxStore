@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iMAXstor - Б/у iPhone по выгодным ценам</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .phone-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .condition-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        #cartPanel {
+            transition: all 0.3s ease;
+        }
+        .cart-item {
+            transition: all 0.2s ease;
+        }
+        .cart-item:hover {
+            background-color: #f8f9fa;
+        }
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fab fa-apple text-gray-700 text-2xl"></i>
+                <h1 class="text-xl font-bold text-gray-800">iMaxStore</h1>
+            </div>
+            <div class="flex items-center space-x-6">
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 font-medium">Главная</a>
+                    <a href="#products" class="text-gray-700 hover:text-blue-600 font-medium">Каталог</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600 font-medium">О нас</a>
+                    <a href="#reviews" class="text-gray-700 hover:text-blue-600 font-medium">Отзывы</a>
+                </nav>
+                <button id="cartButton" class="relative p-2 text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cartCount" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <button class="md:hidden p-2 text-gray-700" id="mobileMenuButton">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t py-2 px-4">
+            <a href="#home" class="block py-2 text-gray-700 hover:text-blue-600">Главная</a>
+            <a href="#products" class="block py-2 text-gray-700 hover:text-blue-600">Каталог</a>
+            <a href="#about" class="block py-2 text-gray-700 hover:text-blue-600">О нас</a>
+            <a href="#reviews" class="block py-2 text-gray-700 hover:text-blue-600">Отзывы</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Качественные б/у iPhone по доступным ценам</h2>
+                <p class="text-gray-600 mb-6">Мы тщательно проверяем каждый телефон перед продажей. Гарантия 12 месяцев на все устройства.</p>
+                <div class="flex space-x-4">
+                    <a href="#products" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300">Посмотреть каталог</a>
+                    <a href="#about" class="border border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-medium transition duration-300">О нас</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img src="https://img.jabko.ua/image/cache/home_cats/may2025/wide-iphonesfull.png.webp" alt="iPhone Collection" class="rounded-lg shadow-lg max-w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Наши iPhone</h2>
+            
+            <!-- Filter Section -->
+            <div class="mb-8 bg-gray-50 p-4 rounded-lg">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                    <div>
+                        <label for="modelFilter" class="block text-sm font-medium text-gray-700 mb-1">Модель</label>
+                        <select id="modelFilter" class="w-full md:w-48 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="all">Все модели</option>
+                            <option value="11">iPhone 11</option>
+                            <option value="12">iPhone 12</option>
+                            <option value="13">iPhone 13</option>
+                            <option value="14">iPhone 14</option>
+                            <option value="15">iPhone 15</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="storageFilter" class="block text-sm font-medium text-gray-700 mb-1">Память</label>
+                        <select id="storageFilter" class="w-full md:w-48 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="all">Любой объем</option>
+                            <option value="64">64GB</option>
+                            <option value="128">128GB</option>
+                            <option value="256">256GB</option>
+                            <option value="512">512GB</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="conditionFilter" class="block text-sm font-medium text-gray-700 mb-1">Состояние</label>
+                        <select id="conditionFilter" class="w-full md:w-48 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="all">Любое состояние</option>
+                            <option value="excellent">Отличное</option>
+                            <option value="good">Хорошее</option>
+                            <option value="satisfactory">Удовлетворительное</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="priceFilter" class="block text-sm font-medium text-gray-700 mb-1">Цена</label>
+                        <select id="priceFilter" class="w-full md:w-48 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="all">Любая цена</option>
+                            <option value="0-300">До $300</option>
+                            <option value="300-500">$300 - $500</option>
+                            <option value="500-700">$500 - $700</option>
+                            <option value="700-1000">$700 - $1000</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="productsContainer">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Почему выбирают нас?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Мы предлагаем только проверенные устройства с гарантией качества</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-check-circle text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Тщательная проверка</h3>
+                    <p class="text-gray-600">Каждый телефон проходит 25-точечную проверку на работоспособность всех функций.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-shield-alt text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Гарантия 12 месяцев</h3>
+                    <p class="text-gray-600">Мы уверены в качестве наших устройств и предоставляем годовую гарантию.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-exchange-alt text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Легкий возврат</h3>
+                    <p class="text-gray-600">Не понравился телефон? Вы можете вернуть его в течение 14 дней без объяснения причин.</p>
+                </div>
+            </div>
+            
+            <div class="mt-16 bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8 md:p-12">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Наш процесс проверки</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Проверка внешнего состояния (царапины, сколы)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Тестирование всех кнопок и разъемов</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Проверка дисплея на битые пиксели</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Тестирование камеры и микрофона</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Проверка аккумулятора (здоровье батареи не менее 85%)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span class="text-gray-700">Финальная диагностика и очистка данных</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Phone Testing" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Отзывы наших клиентов</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/32.jpg" alt="User">
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-gray-900">Анна К.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Купила iPhone 12 в отличном состоянии. Батарея держит как новая, экран без царапин. Доставили быстро, упаковано надежно. Буду рекомендовать друзьям!"</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/45.jpg" alt="User">
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-gray-900">Дмитрий С.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Заказал iPhone 13 Pro 256GB. Состояние действительно отличное, как и было указано. Гарантия дает уверенность в покупке. Спасибо за честное описание товара!"</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/68.jpg" alt="User">
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-gray-900">Елена П.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Первый раз покупала б/у телефон и очень переживала. Но iPhone 11 пришел в идеальном состоянии, работает прекрасно. Отдельное спасибо за быструю доставку и вежливое обслуживание."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Часто задаваемые вопросы</h2>
+            
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="bg-white p-5 rounded-lg shadow-sm">
+                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800" onclick="toggleFAQ(this)">
+                        <span>Какое состояние у ваших телефонов?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="mt-3 text-gray-600 hidden">
+                        <p>Все наши телефоны проходят тщательную проверку и сортируются по состоянию:</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li><strong>Отличное</strong> - минимальные следы использования, экран без царапин</li>
+                            <li><strong>Хорошее</strong> - небольшие потертости на корпусе, экран может иметь мелкие царапины, не заметные при использовании</li>
+                            <li><strong>Удовлетворительное</strong> - видимые следы использования, царапины на экране и корпусе, но все функции работают исправно</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-lg shadow-sm">
+                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800" onclick="toggleFAQ(this)">
+                        <span>Есть ли гарантия на устройства?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="mt-3 text-gray-600 hidden">
+                        <p>Да, мы предоставляем гарантию 12 месяцев на все наши устройства. Гарантия покрывает производственные дефекты и неисправности, не связанные с неправильным использованием устройства.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-lg shadow-sm">
+                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800" onclick="toggleFAQ(this)">
+                        <span>Можно ли вернуть телефон?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="mt-3 text-gray-600 hidden">
+                        <p>Да, вы можете вернуть телефон в течение 14 дней с момента получения без объяснения причин. Устройство должно быть в том же состоянии, в котором вы его получили, со всеми комплектующими и упаковкой.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-lg shadow-sm">
+                    <button class="flex justify-between items-center w-full text-left font-medium text-gray-800" onclick="toggleFAQ(this)">
+                        <span>Как быстро осуществляется доставка?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="mt-3 text-gray-600 hidden">
+                        <p>Мы отправляем заказы в день оплаты или на следующий рабочий день. Сроки доставки зависят от вашего местоположения и выбранной службы доставки. В среднем доставка занимает 2-5 рабочих дней.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">iMaxStore</h3>
+                    <p class="text-gray-400">Продажа качественных б/у iPhone с гарантией. Лучшие цены на рынке.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Меню</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white">Главная</a></li>
+                        <li><a href="#products" class="text-gray-400 hover:text-white">Каталог</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white">О нас</a></li>
+                        <li><a href="#reviews" class="text-gray-400 hover:text-white">Отзывы</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Контакты</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2"></i>
+                            <span>+380 (xxx) xxx-xx-xx</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            <span>info@imaxstore.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>г. Одесса, ул. Пушкина, 123</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Подписаться</h3>
+                    <p class="text-gray-400 mb-4">Будьте в курсе наших акций и новых поступлений</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Ваш email" class="px-4 py-2 rounded-l-lg w-full text-gray-800 focus:outline-none">
+                        <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2025 iMaxStore. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Panel -->
+    <div id="cartPanel" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl transform translate-x-full z-50 overflow-y-auto">
+        <div class="p-4 border-b flex justify-between items-center">
+            <h3 class="text-lg font-semibold">Ваша корзина</h3>
+            <button id="closeCartButton" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4" id="cartItems">
+            <p class="text-gray-500 text-center py-8" id="emptyCartMessage">Ваша корзина пуста</p>
+            <!-- Cart items will be inserted here -->
+        </div>
+        <div class="p-4 border-t hidden" id="cartSummary">
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-600">Сумма:</span>
+                <span class="font-medium" id="cartSubtotal">$0</span>
+            </div>
+            <div class="flex justify-between mb-4">
+                <span class="text-gray-600">Доставка:</span>
+                <span class="font-medium">$0</span>
+            </div>
+            <div class="flex justify-between text-lg font-bold">
+                <span>Итого:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg mt-6 font-medium">
+                Оформить заказ
+            </button>
+        </div>
+    </div>
+    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 mx-4">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                    <i class="fas fa-check text-green-600"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Товар добавлен в корзину!</h3>
+                <p class="text-gray-500 mb-6">Вы можете продолжить покупки или перейти к оформлению заказа.</p>
+                <div class="flex space-x-4">
+                    <button onclick="closeSuccessModal()" class="flex-1 border border-gray-300 rounded-md px-4 py-2 text-gray-700 hover:bg-gray-50">
+                        Продолжить
+                    </button>
+                    <button onclick="goToCheckout()" class="flex-1 bg-blue-600 rounded-md px-4 py-2 text-white hover:bg-blue-700">
+                        Оформить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                model: "11",
+                name: "iPhone 11",
+                storage: "64",
+                color: "Black",
+                condition: "excellent",
+                price: 299,
+                originalPrice: 349,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2021/03/231643/IMG_8616%20(2)-420x420.jpg.webp",
+                description: "Отличное состояние, батарея 92%, без царапин на экране."
+            },
+            {
+                id: 2,
+                model: "11",
+                name: "iPhone 11",
+                storage: "128",
+                color: "White",
+                condition: "good",
+                price: 329,
+                originalPrice: 379,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2021/03/231641/IMG_8619%20(2)-420x420.jpg.webp",
+                description: "Хорошее состояние, батарея 88%, мелкие потертости на корпусе."
+            },
+            {
+                id: 3,
+                model: "12",
+                name: "iPhone 12",
+                storage: "64",
+                color: "Blue",
+                condition: "excellent",
+                price: 399,
+                originalPrice: 449,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2021/04/161626/blue-420x420.jpg.webp",
+                description: "Превосходное состояние, батарея 95%, как новый."
+            },
+            {
+                id: 4,
+                model: "12",
+                name: "iPhone 12",
+                storage: "128",
+                color: "Green",
+                condition: "good",
+                price: 429,
+                originalPrice: 479,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2021/04/161627/green-420x420.jpg.webp",
+                description: "Хорошее состояние, батарея 90%, небольшие потертости."
+            },
+            {
+                id: 5,
+                model: "12",
+                name: "iPhone 12 Pro",
+                storage: "256",
+                color: "Graphite",
+                condition: "excellent",
+                price: 549,
+                originalPrice: 599,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2021/06/071238/dg-420x420.jpg.webp",
+                description: "Отличное состояние, батарея 93%, полный комплект."
+            },
+            {
+                id: 6,
+                model: "13",
+                name: "iPhone 13",
+                storage: "128",
+                color: "Pink",
+                condition: "excellent",
+                price: 599,
+                originalPrice: 649,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2022/04/291048/4O2A0058-420x420.jpg.webp",
+                description: "Как новый, батарея 98%, без следов использования."
+            },
+            {
+                id: 7,
+                model: "13",
+                name: "iPhone 13",
+                storage: "256",
+                color: "Midnight",
+                condition: "good",
+                price: 649,
+                originalPrice: 699,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2022/04/221558/IMG_9284-420x420.jpg.webp",
+                description: "Хорошее состояние, батарея 91%, мелкие царапины на корпусе."
+            },
+            {
+                id: 8,
+                model: "13",
+                name: "iPhone 13 Pro",
+                storage: "256",
+                color: "Sierra Blue",
+                condition: "excellent",
+                price: 749,
+                originalPrice: 799,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2022/04/221140/IMG_9365%20(1)-420x420.jpg.webp",
+                description: "Превосходное состояние, батарея 96%, полный комплект."
+            },
+            {
+                id: 9,
+                model: "14",
+                name: "iPhone 14",
+                storage: "128",
+                color: "Purple",
+                condition: "excellent",
+                price: 799,
+                originalPrice: 849,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2023/11/191506/purple-1-420x420.jpg.webp",
+                description: "Как новый, батарея 99%, без следов использования."
+            },
+            {
+                id: 10,
+                model: "14",
+                name: "iPhone 14 Pro",
+                storage: "256",
+                color: "Space Black",
+                condition: "excellent",
+                price: 999,
+                originalPrice: 1099,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2023/07/041244/space-black-1-1397x1397.jpg-420x420.jpg.webp",
+                description: "Отличное состояние, батарея 97%, полный комплект."
+            },
+            {
+                id: 11,
+                model: "15",
+                name: "iPhone 15",
+                storage: "128",
+                color: "Blue",
+                condition: "excellent",
+                price: 899,
+                originalPrice: 949,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2024/08/051005/15-blue-1-420x420.jpg.webp",
+                description: "Как новый, батарея 100%, без следов использования."
+            },
+            {
+                id: 12,
+                model: "15",
+                name: "iPhone 15 Pro",
+                storage: "256",
+                color: "Natural Titanium",
+                condition: "excellent",
+                price: 1199,
+                originalPrice: 1299,
+                image: "https://img.jabko.ua/image/cache/catalog/products/2024/04/111717/15-pro-natural-1-420x420.jpg.webp",
+                description: "Превосходное состояние, батарея 99%, полный комплект."
+            }
+        ];
+
+        // Cart Data
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // DOM Elements
+        const productsContainer = document.getElementById('productsContainer');
+        const cartButton = document.getElementById('cartButton');
+        const closeCartButton = document.getElementById('closeCartButton');
+        const cartPanel = document.getElementById('cartPanel');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const cartSummary = document.getElementById('cartSummary');
+        const cartSubtotal = document.getElementById('cartSubtotal');
+        const cartTotal = document.getElementById('cartTotal');
+        const successModal = document.getElementById('successModal');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        // Filter Elements
+        const modelFilter = document.getElementById('modelFilter');
+        const storageFilter = document.getElementById('storageFilter');
+        const conditionFilter = document.getElementById('conditionFilter');
+        const priceFilter = document.getElementById('priceFilter');
+        
+        // Render Products
+        function renderProducts(productsToRender) {
+            productsContainer.innerHTML = '';
+            
+            if (productsToRender.length === 0) {
+                productsContainer.innerHTML = '<p class="col-span-full text-center text-gray-500 py-12">По вашему запросу ничего не найдено</p>';
+                return;
+            }
+            
+            productsToRender.forEach(product => {
+                const conditionText = {
+                    'excellent': 'Отличное',
+                    'good': 'Хорошее',
+                    'satisfactory': 'Удовлетворительное'
+                };
+                
+                const conditionColors = {
+                    'excellent': 'bg-green-100 text-green-800',
+                    'good': 'bg-yellow-100 text-yellow-800',
+                    'satisfactory': 'bg-red-100 text-red-800'
+                };
+                
+                const discount = Math.round(100 - (product.price / product.originalPrice * 100));
+                
+                const productElement = document.createElement('div');
+                productElement.className = 'bg-white rounded-lg overflow-hidden shadow-md phone-card transition duration-300 relative';
+                productElement.innerHTML = `
+                    ${product.price < product.originalPrice ? `<span class="discount-badge">-${discount}%</span>` : ''}
+                    <div class="p-4">
+                        <div class="flex justify-center mb-4 h-48">
+                            <img src="${product.image}" alt="${product.name}" class="object-contain h-full">
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name} ${product.storage}GB</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.color}</p>
+                        <span class="${conditionColors[product.condition]} condition-badge">${conditionText[product.condition]}</span>
+                        <div class="flex items-center mt-3">
+                            <span class="text-xl font-bold text-gray-800">$${product.price}</span>
+                            ${product.price < product.originalPrice ? `<span class="ml-2 text-sm text-gray-500 line-through">$${product.originalPrice}</span>` : ''}
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button onclick="addToCart(${product.id})" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition duration-300">
+                                В корзину
+                            </button>
+                            <button onclick="showProductDetails(${product.id})" class="flex-1 border border-gray-300 text-gray-700 hover:bg-gray-50 py-2 rounded-md font-medium transition duration-300">
+                                Подробнее
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productsContainer.appendChild(productElement);
+            });
+        }
+        
+        // Filter Products
+        function filterProducts() {
+            const modelValue = modelFilter.value;
+            const storageValue = storageFilter.value;
+            const conditionValue = conditionFilter.value;
+            const priceValue = priceFilter.value;
+            
+            let filteredProducts = products;
+            
+            if (modelValue !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.model === modelValue);
+            }
+            
+            if (storageValue !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.storage === storageValue);
+            }
+            
+            if (conditionValue !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.condition === conditionValue);
+            }
+            
+            if (priceValue !== 'all') {
+                const [min, max] = priceValue.split('-').map(Number);
+                filteredProducts = filteredProducts.filter(product => {
+                    if (max) {
+                        return product.price >= min && product.price <= max;
+                    } else {
+                        return product.price >= min;
+                    }
+                });
+            }
+            
+            renderProducts(filteredProducts);
+        }
+        
+        // Add to Cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            saveCartToLocalStorage();
+            showSuccessModal();
+        }
+        
+        // Update Cart
+        function updateCart() {
+            cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+            
+            if (cart.length === 0) {
+                emptyCartMessage.classList.remove('hidden');
+                cartSummary.classList.add('hidden');
+                cartItems.innerHTML = '';
+            } else {
+                emptyCartMessage.classList.add('hidden');
+                cartSummary.classList.remove('hidden');
+                
+                cartItems.innerHTML = '';
+                
+                let subtotal = 0;
+                
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.className = 'cart-item flex py-4 border-b';
+                    cartItemElement.innerHTML = `
+                        <div class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-md overflow-hidden">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain">
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">${item.name} ${item.storage}GB</h4>
+                            <p class="text-xs text-gray-500">${item.color}</p>
+                            <div class="flex items-center mt-1">
+                                <span class="text-sm font-medium">$${item.price}</span>
+                                <span class="mx-1">×</span>
+                                <div class="flex items-center border rounded-md">
+                                    <button onclick="updateQuantity(${item.id}, -1)" class="px-2 py-1 text-gray-500 hover:bg-gray-100">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <span class="px-2 text-sm">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.id}, 1)" class="px-2 py-1 text-gray-500 hover:bg-gray-100">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 ml-4">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    cartItems.appendChild(cartItemElement);
+                });
+                
+                cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+                cartTotal.textContent = `$${subtotal.toFixed(2)}`;
+            }
+        }
+        
+        // Update Quantity
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            
+            if (item) {
+                item.quantity += change;
+                
+                if (item.quantity <= 0) {
+                    cart = cart.filter(item => item.id !== productId);
+                }
+                
+                updateCart();
+                saveCartToLocalStorage();
+            }
+        }
+        
+        // Remove from Cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+            saveCartToLocalStorage();
+        }
+        
+        // Save Cart to Local Storage
+        function saveCartToLocalStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        
+        // Show Product Details (placeholder)
+        function showProductDetails(productId) {
+            const product = products.find(p => p.id === productId);
+            alert(`Подробная информация о ${product.name} ${product.storage}GB (${product.color})\n\nСостояние: ${getConditionText(product.condition)}\nЦена: $${product.price}${product.price < product.originalPrice ? ` (экономия $${product.originalPrice - product.price})` : ''}\n\n${product.description}`);
+        }
+        
+        function getConditionText(condition) {
+            const conditions = {
+                'excellent': 'Отличное',
+                'good': 'Хорошее',
+                'satisfactory': 'Удовлетворительное'
+            };
+            return conditions[condition] || condition;
+        }
+        
+        // Show Success Modal
+        function showSuccessModal() {
+            successModal.classList.remove('hidden');
+        }
+        
+        function closeSuccessModal() {
+            successModal.classList.add('hidden');
+        }
+        
+        function goToCheckout() {
+            closeSuccessModal();
+            openCartPanel();
+        }
+        
+        // Toggle Cart Panel
+        function openCartPanel() {
+            cartPanel.classList.remove('translate-x-full');
+            cartOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCartPanel() {
+            cartPanel.classList.add('translate-x-full');
+            cartOverlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        
+        // Toggle FAQ
+        function toggleFAQ(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+        
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+        
+        // Event Listeners
+        cartButton.addEventListener('click', openCartPanel);
+        closeCartButton.addEventListener('click', closeCartPanel);
+        cartOverlay.addEventListener('click', closeCartPanel);
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        
+        // Filter Event Listeners
+        modelFilter.addEventListener('change', filterProducts);
+        storageFilter.addEventListener('change', filterProducts);
+        conditionFilter.addEventListener('change', filterProducts);
+        priceFilter.addEventListener('change', filterProducts);
+        
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        toggleMobileMenu();
+                    }
+                }
+            });
+        });
+        
+        // Initialize
+        renderProducts(products);
+        updateCart();
+    </script>
+</body>
+</html>
